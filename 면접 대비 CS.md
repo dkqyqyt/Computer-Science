@@ -393,6 +393,8 @@ ii. 웹에서 모든 리소스는 Link 할 수 있는 URL을 가지고 있어야
 - 즉, 어떤 웹페이지를 조회할 때 원하는 페이지로 바로 이동하거나 이동시키기 위해서는 해당 링크의 정보가 필요하다.
 - 이때 POST 방식을 사용할 경우에 값(링크의 정보)이 Body에 있기 때문에 URL만 전달할 수 없으므로 GET 방식을 사용해야한다. 그러나 글을 저장하는 경우에는 URL을 제공할 필요가 없기 때문에 POST 방식을 사용한다.
 
+
+
 ### 쿠키와 세션
 
 - HTTP 프로토콜의 특징
@@ -405,6 +407,204 @@ ii. 웹에서 모든 리소스는 Link 할 수 있는 URL을 가지고 있어야
   - 즉, 현재 접속한 사용자가 이전에 접속했던 사용자와 같은 사용자인지 아닌지 알 수 있는 방법이 없다.
   - 계속해서 연결을 유지하지 않기 때문에 리소스 낭비가 줄어드는 것이 큰 장점이지만, 통신 할 때마다 새로 연결하기 때문에 클라이언트는 매 요청마다 인증을 해야한다는 단점이 있다.
   - 이전 요청과 현재 요청이 같은 사용자의 요청인지 알기 위해서는 상태를 유지해야 한다.
+  - HTTP 프로토콜에서 상태를 유지하기 위한 기술로 쿠키와 세션이 있다.
+- 쿠키란?
+  - 개념
+    - 클라이언트 로컬에 저장되는 키와 값이 들어있는 파일이다.
+    - 이름, 값, 유효 시간, 경로 등을 포함하고 있다.
+    - 클라이언트의 상태 정보를 브라우저에 저장하여 참조한다.
+  - 구성 요소
+    - 쿠키의 이름 (name)
+    - 쿠키의 값 (value)
+    - 쿠키의 만료시간 (Expires)
+    - 쿠키를 전송할 도메인 이름 (Domain)
+    - 쿠키를 전송할 경로 (Path)
+    - 보안 연결 여부 (Secure)
+    - HttpOnly 여부 (HttpOnly)
+  - 동작 방식
+    - a. 웹 브라우저가 서버에 요청
+    - b. 상태를 유지하고 싶은 값을 쿠키로 생성
+    - c. ㅅ버가 응답할 때 HTTP 헤더(Set-Cookie)에 쿠키를 포함해서 전송
+    - d. 전달받은 쿠키는 웹 브라우저에서 관리하고 있다가, 다음 요청 때 쿠키를 HTTP 헤더에 넣어서 전송
+    - e. 서버에서는 쿠키 정보를 읽어 이전 상태 정보를 확인하 후 응답
+  - 쿠키 사용 예
+    - 아이디, 비밀번호 저장
+    - 쇼핑몰 장바구니
+- 세션이란?
+  - 개념
+    - 일정 시간 동안 같은 브라우저로부터 들어오는 요청을 하나의 상태로 보고 그 상태를 유지하는 기술이다.
+    - 즉, 웹 브라우저를 통해 서버에 접속한 이후부터 브라우저를 종료할 때까지 유지되는 상태이다.
+  - 동작방식
+    - a. 웹 브라우저가 서버에 요청
+    - b. 서버가 해당 웹브라우저(클라이언트)에 유일한 ID (Session ID)를 부여함
+    - c. 서버가 응답할 때 HTTP 헤더(Set-Cookie)에 Session ID를 포함해서 전송, 쿠키에 Session ID를 JSESSIONID라는 이름으로 저장
+    - d. 웹브라우저는 이후 웹 브라우저를 닫기까지 다음 요청 때 부여된 Session ID가 담겨있는 쿠키를 HTTP 헤더에 넣어서 전송
+    - e. 서버는 세션 ID를 확인하고, 해당 세션에 관련된 정보를 확인한 후 응답
+  - 세션 사용 예
+    - 로그인
+- 쿠키와 세션의 차이점
+  - 저장 위치
+    - 쿠키 : 클라이언트
+    - 세션 : 서버
+  - 보안
+    - 쿠키 : 클라이언트에 저장되므로 보안에 취약하다.
+    - 세션 : 쿠키를 이용해 Session ID만 저장하고 이 값으로 구분해서 서버에서 처리하므로 비교적 보안성이 좋다.
+  - 라이프사이클
+    - 쿠키 : 만료시간에 따라 브라우저를 종료해도 계속해서 남아 있을 수 있다.
+    - 세션 : 만료시간을 정할 수 있지만 브라우저가 종료되면 만료시간에 상관없이 삭제된다.
+  - 속도
+    - 쿠키 : 클라이언트에 저장되어서 서버에 요청 시 빠르다
+    - 세션 : 실제 저장된 정보가 서버에 있으므로 서버의 처리가 필요해 쿠키보다 느리다.
+
+### REST와 RESTful의 개념
+
+- REST 란
+  - REST의 정의
+    - "Representational State Transfer(대표적인 상태 전달)"의 약자
+    - 월드 와이드 웹(www)과 같은 분산 하이퍼미디어 시스템을 위한 소프트웨어 개발 아키텍쳐의 한 형식
+      - REST는 기본적으로 웹의 기존 기술과 HTTP 프로토콜을 그대로 활용하기 때문에 웹의 장점을 최대한 활용할 수 있는 아키텍쳐 스타일이다.
+      - REST는 네트워크 상에서 Client와 Server 사이의 통신 방식 중 하나이다.
+  - REST의 구체적인 개념
+    - HTTP URI(Uniform Resource Identifier)를 통해 자원(Resource)을 명시하고, HTTP Method(Post,Get,Put,Delete)를 통해 해당 자원에 대한 CRUD Operation을 적용하는 것을 의미한다.
+      - 즉, REST는 자원 기반의 구조(ROA, Resource Oriented Architecture) 설계의 중심에 Resource가 있고 HTTP Method를 통해 Resource를 처리하도록 설계된 아키텍쳐를 의미한다.
+      - 웹 사이트의 이미지, 텍스트, DB 내용 등의 모든 자원에 고유한 ID인 HTTP URI를 부여한다.
+  - REST 장단점
+    - 장점
+      - 여러 가지 서비스 디자인에서 생길 수 있는 문제를 최소화해준다.
+      - Hypermedia API의 기본을 충실히 지키면서 범용성을 보장한다.
+      - HTTP 프로토콜의 표준을 최대한 활용하여 여러 추가적인 장점을 함께 가져갈 수 있게 해준다.
+    - 단점
+      - 브라우저를 통해 테스트할 일이 많은 서비스라면 쉽게 고칠 수 있는 URL보다 Header 값이 왠지 더 어렵게 느껴진다.
+      - 구형 브라우저가 아직 제대로 지원해주지 못하는 부분이 존재한다.
+        - PUT, DELETE를 사용하지 못하는 점
+        - pushState를 지원하지 않는 점
+  - REST가 필요한 이유
+    - '애플리케이션 분리 및 통합'
+    - '다양한 클라이언트의 등장'
+    - 즉, 최근의 서버 프로그램은 다양한 브라우저와 안드로이드폰, 아이폰과 같은 모바일 디바이스에서도 통신을 할 수 있어야 한다.
+  - REST 구성 요소
+    - a. 자원(Resource): URI
+      - 모든 자원에 고유한 ID가 존재하고, 이 자원은 Server에 존재한다.
+      - 자원을 구별하는 ID는 '/groups/:group_id'와 같은 HTTP URI다.
+      - Client는 URI를 이용해서 자원을 지정하고 해당 자원의 상태(정보)에 대한 조작을 Server에 요청한다.
+    - b. 행위(Verb): HTTP Method
+      - HTTP 프로토콜의 Method를 사용한다.
+      - HTTP 프로토콜은 GET, POST, PUT, DELETE, HEAD와 같은 메서드를 제공한다.
+    - c. 표현(Representation of Resource)
+      - Client가 자원의 상태(정보)에 대한 조작을 요청하면 Server는 이에 적절한 응답(Representation)을 보낸다.
+      - REST에서 하나의 자원은 JSON, XML, TEXT, RSS 등 여러 형태의 Representation으로 나타내어질 수 있다.
+      - JSON 혹은 XML을 통해 데이터를 주고 받는 것이 일반적이다.
+  - REST 특징
+    - a. Server-Client(서버-클라이언트 구조)
+    - b. Stateless (무상태)
+    - c. Cacheable (캐시 처리 가능)
+    - d. Layered System (계층화)
+    - e. Code-On-Demand(optional)
+    - f. Uniform Interface (인터페이스 일관성)
+- REST API
+  - REST API의 정의
+    - REST 기반으로 서비스 API를 구현한 것
+    - 최근 OpenAPI(누구나 사용할 수 있도록 공개된 API: 구글 맵, 공공 데이터 등), 마이크로 서비스(하나의 큰 애플리케이션을 여러 개의 작은 애플리케이션으로 쪼개어 변경과 조합이 가능하도록 만든 아키텍쳐) 등을 제공하는 업체 대부분은 REST API를 제공한다.
+  - REST API의 특징
+    - 사내 시스템들도 REST 기반으로 시스템을 분산해 확장성과 잿용성을 높여 유지보수 및 운용을 편리하게 할 수 있다.
+    - REST는 HTTP 표준을 기반으로 구현하므로, HTTP를 지원하는 프로그램 언어로 클라이언트, 서버를 구현할 수 있다.
+    - 즉, REST API를 제작하면 델파이 클라이언트 뿐 아니라, 자바, C#, 웹 등을 이용해 클라이언트를 제작할 수 있다.
+  - REST API 설계 기본 규칙
+    - a. URI는 정보의 자원을 표현해야 한다.
+      - resource는 동사보다는 명사를 사용한다.
+      - resource는 영어 소문자 복수형을 사용하여 표현한다.
+      - Ex) `GET /Member/1` -> `GET /members/1`
+    - b. 자원에 대한 행위는 HTTP Method(GET,PUT,POST,DELETE 등)로 표현한다.
+      - URI에 HTTP Method가 들어가면 안된다.
+      - Ex) `GET /members/delete/1` -> `DELETE /members/1`
+      - URI에 행위에 대한 동사 표현이 들어가면 안된다
+      - Ex) `GET /members/show/1` -> `GET /members/1`
+      - Ex) `GET /members/insert/2` -> `POST /members/2`
+  - REST API 설계 규칙
+    - a. 슬래시 구분자(/)는 계층 관계를 나타내는 데 사용한다.
+      - Ex) `http://restapi.example.com/houses/apartments`
+    - b. URI 마지막 문자로 슬래시(/)를 포함하지 않는다.
+      - URI에 포함되는 모든 글자는 리소스의 유일한 식별자로 사용되어야 하며 URI가 다르다는 것은 리소스가 다르다는 것이고, 역으로 리소스가 다르면 URI도 달라져야 한다.
+      - REST API는 분명한 URI를 만들어 통신을 해야하기 때문에 혼동을 주지 않도록 URI 경로의 마지막에는 슬래시(/)를 사용하지 않는다.
+      - Ex) `http://restapi.example.com/houses/apartments/ (X)`
+    - c. 하이픈(-)은 URI의 가독성을 높이는 데 사용
+      - 불가피하게 긴 URI경로를 사용하게 된다면 하이픈을 사용해 가독성을 높인다.
+    - d. 밑줄(_)은 URI에 사용하지 않는다.
+      - 밑줄은 보기 어렵거나 밑줄 때문에 문자가 가려지기도 하므로 가독성을 위해 밑줄은 사용하지 않는다.
+    - e. URI 경로에는 소문자가 적합하다.
+      - URI 경로에 대문자 사용은 피하도록 한다.
+      - RFC 3986(URI 문법 형식)은 URI 스키마와 호스트를 제외하고는 대소문자를 구별하도록 규정하기 때문
+    - f. 파일확장자는 URI에 포함하지 않는다.
+      - REST API에서는 메시지 바디 내용의 포맷을 나타내기 위한 파일 확장자를 URI 안에 포함시키지 않는다.
+      - Accept header를 사용한다.
+      - Ex) `http://restapi.example.com/members/soccer/345/photo.jpg (X)`
+      - Ex) `GET /members/soccer/345/photo HTTP/1.1 Host: restapi.example.com Accept: image/jpg (O)`
+    - g. 리소스 간에는 연관 관계가 있는 경우
+      - /리소스명/리소스 ID/관계가 있는 다른 리소스명
+      - Ex) `GET : /users/{userid}/devices (일반적으로 소유 'has'의 관계를 표현할 때)`
+    - h. id는 하나의 특정 resource를 나타내는 고유값
+      - Ex) student를 생성하는 route: POST /students
+      - Ex) id=12인 student를 삭제하는 route:DELETE /students/12
+- RESTful
+  - RESTful의 개념
+    - RESTful은 일반적으로 REST라는 아키텍쳐를 구현하는 웹 서비스를 나타내기 위해 사용되는 용어이다.
+      - 즉, REST 원리를 따르는 시스템은 RESTful이란 용어로 지칭된다.
+    - RESTful은 REST를 REST답게 쓰기 위한 방법으로, 누군가가 공식적으로 발표한 것이 아니다.
+  - RESTful의 목적
+    - 이해하기 쉽고 사용하기 쉬운 REST API를 만드는 것
+    - RESTful API를 구현하는 근본적인 목적이 퍼포먼스 향상에 있는 것이 아니라, 일관적인 컨벤션을 통한 API의 이해도 및 호환성을 높이는게 주 동기이니, 퍼포먼스가 중요한 상황에서는 굳이 RESTful API를 구현하실 필요는 없습니다.
+  - RESTful 하지 못한 경우
+    - Ex1) CRUD 기능을 모두 POST로만 처리하는 API
+    - Ex2) route에 resource, id 외의 정보가 들어가는 경우 (/students/updateName)
+
+### Socket.io와 WebSocket의 차이
+
+- WebSocket
+  - 개념
+    - 웹 페이지의 한계에서 벗어나 실시간으로 상호작용하는 웹 서비스를 만드는 표준 기술
+  - 배경
+    - HTTP 프로토콜은 클라이언트에서 서버로의 단방향 통신을 위해 만들어진 방법이다.
+    - 실시간 웹을 구현하기 위해서는 양방향 통신이 가능해야 하는데, WebSocket 이전에는 Polling, Streaming 방식의 AJAX 코드를 이용하여 이를 구현하였다.
+    - 하지만 이 방법들을 이용하면 각 브라우저마다 구현 방법이 달라 개발이 어렵다는 문제점이 있었다.
+    - 이를 위해 HTML5 표준의 일부로 WebSocket이 만들어지게 되었다.
+  - 일반 TCP Socket 과의 차이점
+    - 일반 HTTP Request를 통해 handshaking 과정을 거쳐 최초 접속이 이루어진다.
+  - 특징
+    - 소켓을 이용하여 자유롭게 데이터를 주고 받을 수 있다.
+    - 기존의 요청-응답 관계 방식보다 더 쉽게 데이터를 교환할 수 있다.
+    - 다른 HTTP Request와 마찬가지로 80포트를 통해 웹 서버에 연결한다.
+    - http:// 대신 ws:// 로 시작하며 Streaming과 유사한 방식으로 푸쉬를 지원한다.
+    - 클라이언트인 브라우저와 마찬가지로 웹 서버도 WebSocket 기능을 지원해야 한다. (WebSocket을 지원하는 여러 서버 구현체(Jetty, GlassFish, Node.js, Netty, Grizzly 등)가 있다.)
+    - 클라이언트인 브라우저 중에서는 Chrome, Safari, Firefox, Opera에서 WebSocket을 사용할 수 있으며, 각종 모바일 브라우저에서도 WebSocket을 사용할 수 있다.
+    - WebSocket 프로토콜은 아직 확정된 상태가 아니기 때문에 브라우저별로 지원하는 WebSocket 버전이 다르다. (예전 브라우저는 지원 X)
+    - 즉, WebSocket 은 다가올 미래의 기술이지 아직 인터넷 기업에서 시범적으로라도 써 볼 수 있는 기술이 아니다.
+  - 장점
+    - HTTP Request를 그대로 사용하기 때문에 기존의 80, 443 포트로 접속을 하므로 추가로 방화벽을 열지 않고도 양방향 통신이 가능하다.
+    - HTTP 규격인 CORS 적용이나 인증 등의 과정을 기존과 동일하게 사용할 수 있다.
+- Socket.io
+  - 개념
+    - 다양한 방식의 실시간 웹 기술을 손쉽게 사용할 수 있는 모듈 ( 웹 클라이언트로의 푸쉬를 지원하는 모듈 )
+    - WebSocket, FlashSocket, AJAX Long Polling, AAJX Multi part Streaming, IFrame, JSONP Polling 등 다양한 방법을 하나의 API로 추상화한 것이다.
+    - 즉, Socket.io는 JavaScript를 이용하여 브라우저 종류에 상관엇이 실시간 웹을 구현할 수 있도록 한 기술이다.
+  - 특징
+    - Socket.io는 현재 바로 사용할 수 있는 기술이다.
+    - WebSocket 프로토콜은 IETF에서 관장하는 표준 프로토콜이라서 WebSocket을 지원하는 여러 서버 구현체(Jetty, GlassFish, Node.js, Netty, Grizzly 등)가 있지만 Socket.io는 Node.js 하나 밖에 없다.
+  - 장점
+    - 개발자는 Socket.io로 개발을 하고 클라이언트로 푸쉬 메시지를 보내기만 하면, WebSocket을 지원하지 않는 브라우저의 경우는 브라우저 모델과 버전에 따라서 AJAX Long Polling, MultiPart Streaming, Iframe을 이용한 푸쉬, JSONP Polling, Flash Socket 등 다양한 방법으로 내부적으로 푸쉬 메시지를 보내준다.
+    - 즉, WebSocket을 지원하지 않는 어느 브라우저라도 푸쉬 메시지를 일관된 모듈로 보낼 수 있다. 
+
+### Frame Packet Segment Datagram
+
+- PDU (Protocol Data Unit)
+  - 프로토콜 데이터 단위. 데이터 통신에서 상위 계층이 전달한 데이터에 붙이는 제어정보를 뜻한다. 각 계층의 데이터의 단위이다.
+    - 물리 계층 : Bit
+    - 데이터링크 계층 : Frame
+    - 네트워크 게층 : Packets
+    - 전송 계층 : Segment
+    - 세션, 표현, 어플리케이션 게층 : Message(Data)
+- 데이터 캡슐화
+  - PDU는 SDU(Service Data Unit)와 PCI(Protocol Control Information)로 구성되어 있다. SDU는 전송하려는 데이터고, PCI는 제어 정보다. PCI에는 송신자와 수신자 주소, 오류 검출 코드, 프로토콜 제어 정보 등이 있다. 데이터에 제어 정보를 덧붙이는 것은 캡슐화(Encapsulation)라 한다.
+  - 다시말해, 캡슐화는 어떤 네트워크를 통과하기 위해 전송하려는 데이터를 다른 무언가로 감싸서 보내고 해당 네트워크를 통과하면 감싼 부분을 다시 벗겨내어 전송하는 기능을 말한다.
 
 1. 브라우저 주소창에 http://www.test.com 입력 후 엔터를 눌렀을 때부터 페이지가 렌더링되는 과정을 상세히 설명하세요.
    1. local DNS 서버에게 www.test.com에 해당하는 ip주소가 있는지 물어본다. 있다면 바로 해당 ip로 받아온다.

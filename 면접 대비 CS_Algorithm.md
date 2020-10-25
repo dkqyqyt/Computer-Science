@@ -59,6 +59,257 @@
 
 ### 정렬 알고리즘의 종류와 개념
 
+- 버블 정렬
+
+  - 서로 인접한 두 원소를 검사하여 정렬하는 알고리즘
+
+  - 선택 정렬과 기본 개념이 유사하다.
+
+  - 장점
+
+    - 구현이 매우 간단하다.
+
+  - 단점
+
+    - 순서에 맞지 않은 요소를 인접한 요소와 교환한다.
+    - 하나의 요소가 가장 왼쪽에서 가장 오른쪽으로 이동하기 위해서는 배열에서 모든 다른 요소들과 교환되어야 한다.
+    - 특히 특정 요소가 최종 정렬 위치에 이미 있는 경우라도 교환되는 일이 일어난다.
+
+  - ```python
+    def bubble_sort(arr):
+        for i in range(len(arr)-1,0,-1):
+            for j in range(i):
+                if arr[j] > arr[j+1]:
+                    arr[j], arr[j+1] = arr[j+1], arr[j]
+        return arr
+    ```
+
+- 삽입 정렬
+
+  - 손안의 카드를 정렬하는 방법과 유사하다.
+
+    - 새로운 카드를 기존의 정렬된 카드 사이의 올바른 자리를 찾아 삽입한다.
+    - 새로 삽입될 카드의 수만큼 반복하게 되면 전체 카드가 정렬된다.
+
+  - 자료 배열의 모든 요소를 앞에서부터 차례대로 이미 정렬된 배열 부분과 비교하여, 자신의 위치를 찾아 삽입함으로써 정렬을 완성하는 알고리즘
+
+  - 매 순서마다 해당  원소를 삽입할 수 있는 위치를 찾아 해당 위치에 넣는다.
+
+  - 장점
+
+    - 안정한 정렬 방법
+    - 레코드의 수가 적을 경우 알고리즘 자체가 매우 간단하므로 다른 복잡한 정렬 방법보다 유리할 수 있다.
+    - 대부분의 레코드가 이미 정렬되어 있는 경우에 매우 효율적일 수 있다.
+
+  - 단점
+
+    - 비교적 많은 레코드의 이동을 포함한다.
+    - 레코드 수가 많고 레코드 크기가 클 경우에 적합하지 않다.
+
+  - ```python
+    def insertion_sort(arr):
+        for i in range(1,len(arr)):
+            key = arr[i]
+            for j in range(i-1,-1,-1):
+                if arr[j] > key:
+                    arr[j], arr[j+1] = arr[j+1], arr[j]
+        return arr
+    ```
+
+- 선택 정렬
+
+  - 제자리 정렬 알고리즘 중 하나
+
+    - 입력 배열(정렬되지 않은 값들) 이외에 다른 추가 메모리를 요구하지 않는 정렬 방법
+
+  - 해당 순서에 원소를 넣을 위치는 이미 정해져 있고, 어떤 원소를 넣을지 선택하는 알고리즘
+
+    - 첫 번째 순서에는 첫 번째 위치에 가장 최솟값을 넣는다.
+    - 두 번째 순서에는 두 번째 위치에 남은 값 중에서의 최솟값을 넣는다.
+    - ...
+
+  - 과정 설명
+
+    - i. 주어진 배열 중에서 최솟값을 찾는다.
+    - ii. 그 값을 맨 앞에 위치한 값과 교체한다.
+    - iii. 맨 처음 위치를 뺀 나머지 리스트를 같은 방법으로 교체한다.
+    - iv. 하나의 원소만 남을 때가지 위의 1~3 과정을 반복한다.
+
+  - 장점
+
+    - 자료 이동 횟수가 미리 결정된다.
+
+  - 단점
+
+    - 안정성을 만족하지 않는다.
+    - 즉, 값이 같은 레코드가 있는 경우에 상대적인 위치가 변경될 수 있다.
+
+  - ```python
+    def selection_sort(arr):
+        for i in range(len(arr)-1):
+            min_idx = i
+            for j in range(i+1,len(arr)):
+                if arr[min_idx] > arr[j]:
+                    min_idx = j
+            if i != min_idx:
+                arr[i], arr[min_idx] = arr[min_idx], arr[i]
+        return arr
+    ```
+
+- 합병 정렬
+
+  - '존 폰 노이만'이라는 사람이 제안한 방법
+
+  - 일반적인 방법으로 구현했을 때 이 정렬은 안정 정렬에 속하며, 분할 정복 알고리즘의 하나이다.
+
+    - 분할 정복 방법
+      - 문제를 작은 2개의 문제로 분리하고 각각을 해결한 다음, 결과를 모아서 원래의 문제를 해결하는 전략이다.
+      - 분할 정복 방법은 대개 순환 호출을 이용하여 구현한다.
+
+  - 과정 설명
+
+    - i. 리스트의 길이가 0 또는 1이면 이미 정렬된 것으로 본다. 그렇지 않은 경우에는
+    - ii. 정렬되지 않은 리스트를 절반으로 잘라 비슷한 크기의 두 부분 리스트로 나눈다.
+    - iii. 각 부분 리스트를 재귀적으로 합병 정렬을 이용해 정렬한다.
+    - iv. 두 부분 리스트를 다시 하나의 정렬된 리스트로 합병한다.
+
+  - 장점
+
+    - 안정적인 정렬 방법
+      - 데이터의 분포에 영향을 덜 받는다. 즉, 입력 데이터가 무엇이든 간에 정렬되는 시간은 동일하다.
+    - 만약 레코드를 연결리스트로 구성하면, 링크 인덱스만 변경되므로 데이터의 이동은 무시할 수 있을 정도로 작아진다.
+      - 제자리 정렬로 구현할 수 있다.
+    - 따라서 크기가 큰 레코드를 정렬할 경우에 연결 리스트를 사용한다면, 합병 정렬은 퀵 정렬을 포함한 다른 어떤 정렬 방법보다 효율적이다.
+
+  - 단점
+
+    - 만약 레코드를 배열로 구성하면, 임시 배열이 필요하다.
+      - 제자리 정렬이 아니다.
+    - 레코드들의 크기가 큰 경우에는 이동 횟수가 많으므로 매우 큰 시간적 낭비를 초래한다.
+
+  - ```python
+    def merge(left_arr, right_arr):
+        result = []
+        left_idx = 0
+        right_idx = 0
+        while left_idx < len(left_arr) or right_idx < len(right_arr):
+            if left_idx >= len(left_arr):
+                result.extend(right_arr)
+                break
+            if right_idx >= len(right_arr):
+                result.extend(left_arr)
+                break
+            if left_arr[left_idx] <= right_arr[right_idx]:
+                result.append(left_arr[left_idx])
+                left_idx += 1
+            else:
+                result.append(right_arr[right_idx])
+                right_idx += 1
+        return result
+    
+    def merge_sort(arr):
+        if len(arr) == 1:
+            return arr
+        mid = len(arr)//2
+        left_arr = arr[:mid]
+        right_arr = arr[mid:]
+        left_arr = merge_sort(left_arr)
+        right_arr = merge_sort(right_arr)
+        return merge(left_arr,right_arr)
+    ```
+
+- 퀵 정렬
+
+  - '찰스 앤터니 리처드 호어'가 개발한 정렬 알고리즘
+
+  - 퀵 정렬은 불안정 정렬에 속하며, 다른 원소와의 비교만으로 정렬을 수행하는 비교 정렬에 속한다.
+
+  - 분할 정복 알고리즘의 하나로, 평균적으로 매우 빠른 수행 속도를 자랑하는 정렬 방법
+
+    - 합병 정렬과 달리 퀵 정렬은 리스트를 비균등하게 분할한다.
+
+  - 과정 설명
+
+    - i. 리스트 안에 있는 한 요소를 선택한다. 이렇게 고른 원소를 피벗(pivot)이라고 한다.
+    - ii. 피벗을 기준으로 피벗보다 작은 요소들은 모두 피벗의 왼쪽으로 옮겨지고 피벗보다 큰 요소들은 모두 피벗의 오른쪽으로 옮겨진다. 
+    - iii. 피벗을 제외한 왼쪽 리스트와 오른쪽 리스트를 다시 정렬한다.
+      - 분할된 부분 리스트에 대하여 순환 호출을 이용하여 정렬을 반복한다.
+      - 부분 리스트에서도 다시 피벗을 정하고 피벗을 기준으로 2개의 부분 리스트로 나누는 과정을 반복
+    - iv. 부분 리스트들이 더 이상 분할이 불가능할 때까지 반복한다.
+      - 리스트의 크기가 0이나 1이 될 때까지 반복
+
+  - 장점
+
+    - i. 속도가 빠르다.
+      - 시간 복잡도가 O(nlogn)를 가지는 다른 정렬 알고리즘과 비교했을 때도 가장 빠르다.
+    - ii. 추가 메모리 공간을 필요로 하지 않는다.
+      - 퀵 정렬은 O(logn) 만큼의 메모리를 필요로 한다.
+
+  - 단점
+
+    - i. 정렬된 리스트에 대해서는 퀵 정렬의 불균형 분할에 의해 오히려 수행시간이 더 많이 걸린다.
+
+  - ```python
+     def quick_sort(arr, left, right):
+        l = left
+        r = right
+        pivot = arr[(left+right)//2]
+    
+        while l<=r :
+            print(l,r)
+            while arr[l] < pivot:
+                l += 1
+            while arr[r] > pivot:
+                r -= 1
+            if l <= r:
+                arr[l], arr[r] = arr[r], arr[l]
+                l += 1
+                r -= 1
+        if l < right:
+            quick_sort(arr,l,right)
+        if r > left:
+            quick_sort(arr, left, r)
+    
+        return arr
+    ```
+
+- 힙 정렬
+
+  - 완전 이진 트리의 일종으로 우선순위 큐를 위하여 만들어진 자료구조
+
+  - 최댓값, 최솟값을 쉽게 추출할 수 있는 자료구조
+
+  - 장점
+
+    - i. 시간 복잡도가 좋은 편
+    - ii. 힙 정렬이 가장 유용한 경우는 전체 자료를 정렬하는 것이 아니라 가장 큰 값 몇개만 필요할 때이다.
+
+  - ```python
+    def heapify(arr, idx):
+        small = idx
+        if idx*2 < len(arr) and arr[idx*2] < arr[small]:
+            small = idx*2
+        if idx*2 + 1< len(arr) and arr[idx*2+1] < arr[small]:
+            small = idx*2 + 1
+        if small != idx:
+            arr[small], arr[idx] = arr[idx], arr[small]
+            heapify(arr,small)
+    
+    def heap_sort(arr):
+        arr = [0] + arr
+        for i in range(len(arr)//2,0,-1):
+            heapify(arr,i)
+        my_arr = []
+        for i in range(1,len(arr)):
+            if len(arr) == 2:
+                my_arr.append(arr[1])
+                break
+            my_arr.append(arr[1])
+            arr[1] = arr.pop()
+            heapify(arr,1)
+        return my_arr
+    ```
+
 ---
 
 ### MST란

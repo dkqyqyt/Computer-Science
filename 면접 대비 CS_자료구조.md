@@ -42,7 +42,7 @@
 
 - HashTable 구조
 
-  ![image-20201020123056292](C:\Users\multicampus\Desktop\CS\image-20201020123056292.png)
+  ![image-20201020123056292](image-20201020123056292.png)
 
   - Key, Hash Function, Hash, Value, 저장소(Bucket, Slot)로 구성
   - Key
@@ -78,7 +78,7 @@
     - JDK 내부에서 사용하는 충돌 처리 방식
     - Linked List(데이터 6개 이하) 또는 Red-Black Tree(데이터 8개 이상) 사용
 
-    ![image-20201020123725168](C:\Users\multicampus\Desktop\CS\image-20201020123725168.png)
+    ![image-20201020123725168](image-20201020123725168.png)
 
     - Linked List 사용 시 충돌이 발생하면 충돌 발생한 인덱스가 가리키고 있는 Linked List에 노드 추가하여 Value 삽입
     - Key에 대한 Value 탐색 시에는 인덱스가 가리키고 있는 Linked List를 선형 검색하여 Value 반환 (삭제도 마찬가지)

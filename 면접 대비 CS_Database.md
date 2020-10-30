@@ -9,7 +9,7 @@
   - 클라이언트의 요청에 따라 각 어플리케이션의 스레드에서 데이터베이스에 접근하기 위해서는 Connection이 필요하다.
   - Connection pool은 이런 Connection을 여러 개 생성해 두어 저장해 놓은 공간(캐시), 또는 이 공간의 Connection을 필요할 때 꺼내 쓰고 반환하는 기법을 말한다.
 
-  ![image-20201021155928430](C:\Users\multicampus\Desktop\CS\image-20201021155928430.png)
+  ![image-20201021155928430](image-20201021155928430.png)
 
   
 
@@ -83,7 +83,7 @@
 
 - 트랜잭션의 상태
 
-  ![image-20201021161424554](C:\Users\multicampus\Desktop\CS\image-20201021161424554.png)
+  ![image-20201021161424554](image-20201021161424554.png)
 
   - 활동 (Active)
     - 트랜잭션이 실행 중에 있는 상태, 연산들이 정상적으로 실행중인 상태
@@ -139,7 +139,7 @@
 
 - 낮은 단계의 Isolation Level 이용시 발생하는 현상
 
-  ![image-20201021164443923](C:\Users\multicampus\Desktop\CS\image-20201021164443923.png)
+  ![image-20201021164443923](image-20201021164443923.png)
 
   - Dirty Read
     - 커밋되지 않은 수정 중인 데이터를 다른 트랜잭션에서 읽을 수 있도록 허용할 때 발생하는 현상
@@ -321,7 +321,7 @@
 
 - B+ tree 알고리즘
 
-  ![image-20201022101950101](C:\Users\multicampus\Desktop\CS\image-20201022101950101.png)
+  ![image-20201022101950101](image-20201022101950101.png)
   
   - 실제 데이터가 저장된 리프노드(Leaf nodes)
   - 리프노드까지의 경로 역할을 하는 논리프노드(Non-leaf nodes)

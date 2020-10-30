@@ -237,7 +237,7 @@
     - Date : HTTP 메시지를 생성한 일시 (RFC 1123에서 규정)
       - `Date : Sat, 2 Oct 2018 02:00:12 GMT`
     - Connection : 클라이언트와 서버 간 연결에 대한 옵션 설정 (다소 모호한 복잡성 있음)
-      - `Connection: clase` => 현재 HTTP 메시지 직후에 TCP 접속을 끊는다는 것을 알림
+      - `Connection: close` => 현재 HTTP 메시지 직후에 TCP 접속을 끊는다는 것을 알림
       - `Connection: Keep-Alive` => 현재 TCP 커넥션을 유지
     - Cache-Control
     - Pragma
